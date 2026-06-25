@@ -1,0 +1,23 @@
+import streamlit as st
+import sounddevice as sd
+import numpy as np
+import time
+
+st.title("2nd Sound Detection System")
+
+THRESHOLD = 0.1
+TIME_WINDOW = 3
+
+def detect_sound(duration=0.5):
+    recording = sd.rec(
+        int(duration * 44100),
+        samplerate=44100,
+        channels=1
+    )
+    sd.wait()
+
+    volume = np.linalg.norm(recording) / len(recording)
+    return volume > THRESHOLD
+
+if st.button("Start Listening"):
+    st.write("Listening for first sound...")
